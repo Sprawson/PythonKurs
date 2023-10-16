@@ -9,7 +9,6 @@ def generate_prime_number(start,end):
         if is_prime(n):
             yield n
 def is_prime(n):
-     # Check if the number is prime
     if n < 2:
         return False
     if n in [2, 3, 5, 7]:

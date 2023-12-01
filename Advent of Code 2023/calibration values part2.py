@@ -14,7 +14,7 @@ Consider your entire calibration document. What is the sum of all of the calibra
 
 
 def get_words(string):
-    pos1 = 1000000
+    pos1 = 10000
     pos2 = -1
     word1 = -1
     word2 = -1
@@ -35,25 +35,33 @@ def get_words(string):
             if pos2 < last:
                 pos2 = last
                 word2 = substrings[substring]
+        if word2 == -1 and pos1 != 10000:
+            word2 = word1
+            pos2 = pos1
+
+
 
     return pos1, word1, pos2, word2
 
 
 def get_digits(string):
-    first_digit = -1
+    f_digit = -1
     second_digit = -1
     first_position = 10000
     second_position = -1
     for x in range(len(string)):
         if string[x].isdigit():
-            if first_digit == -1:
-                first_digit = int(string[x])
+            if f_digit == -1:
+                f_digit = int(string[x])
                 first_position = x
             else:
                 second_digit = int(string[x])
                 second_position = x
+    if second_digit == -1 and first_position != 10000:
+        second_digit = f_digit
+        second_position = first_position
 
-    return first_position, first_digit, second_position, second_digit
+    return first_position, f_digit, second_position, second_digit
 
 
 file = open('input.txt', 'r')
@@ -76,15 +84,15 @@ for value in input_file:
     else:
         second_digit = second_word_value
 
-    if second_digit == -1:
-        second_digit = first_digit
-    print(value)
+    print("AsdSADSAD")
+    print(value,end='')
     print(first_digit, second_digit)
-    # print(first_digit_value, first_digit_position)
-    # print(first_word_value, first_word_position)
-    # print(second_digit_value, second_digit_position)
-    # print(second_word_value, second_word_position)
+    print(first_digit_value, first_digit_position)
+    print(first_word_value, first_word_position)
+    print(second_digit_value, second_digit_position)
+    print(second_word_value, second_word_position)
     calibration_values.append(first_digit * 10 + second_digit)
+    print(first_digit * 10 + second_digit)
 
 print(calibration_values)
 print(len(calibration_values))

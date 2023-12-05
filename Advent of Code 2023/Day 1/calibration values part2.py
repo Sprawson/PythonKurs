@@ -84,17 +84,5 @@ for value in input_file:
     else:
         second_digit = second_word_value
 
-    print("AsdSADSAD")
-    print(value,end='')
-    print(first_digit, second_digit)
-    print(first_digit_value, first_digit_position)
-    print(first_word_value, first_word_position)
-    print(second_digit_value, second_digit_position)
-    print(second_word_value, second_word_position)
-    calibration_values.append(first_digit * 10 + second_digit)
-    print(first_digit * 10 + second_digit)
 
-print(calibration_values)
-print(len(calibration_values))
-print(len(input_file))
 print((sum(calibration_values)))

@@ -16,7 +16,7 @@ In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Addi
 What is the sum of all of the calibration values?"""
 
 
-file = open('input.txt','r')
+file = open('input.txt', 'r')
 
 input  = file.readlines()
 

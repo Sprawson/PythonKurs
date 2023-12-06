@@ -34,9 +34,8 @@ def number_in_range(m, n):
 
 f = open("input.txt", 'r')
 file_lines = f.readlines()
-lines = []
 # Add dots on all sides and remove \n at the end of lines
-lines.append('.' * (len(file_lines) + 2))
+lines = ['.' * (len(file_lines) + 2)]
 for line in file_lines:
     buf = '.' + line.strip() + '.'
     lines.append(buf)

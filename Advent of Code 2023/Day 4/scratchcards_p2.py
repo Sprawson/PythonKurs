@@ -25,11 +25,15 @@ Your one instance of card 6 (one original) has no matching numbers and wins no m
 Once all of the originals and copies have been processed, you end up with 1 instance of card 1, 2 instances of card 2, 4 instances of card 3, 8 instances of card 4, 14 instances of card 5, and 1 instance of card 6. In total, this example pile of scratchcards causes you to ultimately have 30 scratchcards!
 
 Process all of the original and copied scratchcards until no more scratchcards are won. Including the original set of scratchcards, how many total scratchcards do you end up with?"""
+
+
 def get_chosen_numbers(string):
     table = string.split(':')[1].split('|')[1].split(" ")
     while '' in table:
         table.remove('')
     return table
+
+
 def get_winning_numbers(string):
     list = string.split(':')[1].split('|')[0].split(" ")
     while '' in list:
@@ -37,28 +41,27 @@ def get_winning_numbers(string):
     # new_list = [int(x) for x in list]
     return list
 
+
 f = open("input.txt", 'r')
 file_lines = f.readlines()
 lines = []
+
+#remove \n from end of lines
 for line in file_lines:
     lines.append(line.strip())
 
-points = []
-duplicator = 0
-cards = []
+#number of original cards
+multipiers = [1 for i in range(len(lines))]
 for x in range(len(lines)):
     winning_numbers = get_winning_numbers(lines[x])
     chosen_numbers = get_chosen_numbers(lines[x])
-    cards.append(chosen_numbers)
-    for y in range(x, len(cards)):
-        matching_numbers = set(cards[y]).intersection(winning_numbers)
-        matches = len(matching_numbers)
-        if matches > 0 and x + matches < len(lines):
-            for i in range(1,matches+1):
-                cards.append(get_chosen_numbers(lines[x+i]))
-                cards.remove(chosen_numbers)
+    # find matches
+    matching_numbers = set(chosen_numbers).intersection(winning_numbers)
+    matches = len(matching_numbers)
+    # add cards based on number of matches
+    for i in range(x+1, x + matches +1):
+        multipiers[i] = multipiers[i] + (1 * multipiers[x])
 
-
-print(cards)
+print(multipiers)
+print(sum(multipiers))
 #
-

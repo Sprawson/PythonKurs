@@ -51,7 +51,7 @@ for line in file_lines:
     lines.append(line.strip())
 
 #number of original cards
-multipiers = [1 for i in range(len(lines))]
+number_of_cards = [1 for l in lines]
 for x in range(len(lines)):
     winning_numbers = get_winning_numbers(lines[x])
     chosen_numbers = get_chosen_numbers(lines[x])
@@ -60,8 +60,8 @@ for x in range(len(lines)):
     matches = len(matching_numbers)
     # add cards based on number of matches
     for i in range(x+1, x + matches +1):
-        multipiers[i] = multipiers[i] + (1 * multipiers[x])
+        number_of_cards[i] = number_of_cards[i] + (1 * number_of_cards[x])
 
-print(multipiers)
-print(sum(multipiers))
+print(number_of_cards)
+print(sum(number_of_cards))
 #

@@ -84,10 +84,55 @@ So, the lowest location number in this example is 35.
 
 What is the lowest location number that corresponds to any of the initial seed numbers?"""
 
-f = open("input.txt", 'r')
-file_lines = f.readlines()
-lines = []
+import re
 
-#remove \n from end of lines
-for line in file_lines:
-    lines.append(line.strip())
+f = open("input.txt", 'r')
+input_file = f.read()
+
+
+def find_map(title):
+    int_map = []
+    # regex to find map or seeds is (?<=title\n)(.+\n)+|(?<=title: ).+
+    #                               part for maps  or part for seeds
+    search_regex = "(?<=" + re.escape(title) + "\n)(.+\n)+|(?<=" + re.escape(title) + " ).+"
+    map_str = re.search(search_regex, input_file).group().split("\n")
+    while '' in map_str:
+        map_str.remove('')
+    for line in map_str:
+        numbers = [int(x) for x in line.split(" ")]
+        int_map.append(numbers)
+    return int_map
+
+
+def convert_values(values, ratio_map):
+    converted_values = []
+    for value in values:
+        for ratio in ratio_map:
+            if value in range(ratio[1], ratio[1] + ratio[2]):
+                converted_value = value - ratio[1] + ratio[0]
+                converted_values.append(converted_value)
+                break
+        else:
+            converted_value = value
+            converted_values.append(converted_value)
+    return converted_values
+
+
+seeds = find_map("seeds:")[0]
+seed_to_soil_map = find_map("seed-to-soil map:")
+soil_to_fertilizer_map = find_map("soil-to-fertilizer map:")
+fertilizer_to_water_map = find_map("fertilizer-to-water map:")
+water_to_light_map = find_map("water-to-light map:")
+light_to_temperature_map = find_map("light-to-temperature map:")
+temperature_to_humidity_map = find_map("temperature-to-humidity map:")
+humidity_to_location_map = find_map("humidity-to-location map:")
+
+conversion_maps = [seed_to_soil_map, soil_to_fertilizer_map, fertilizer_to_water_map, water_to_light_map,
+                   light_to_temperature_map, temperature_to_humidity_map, humidity_to_location_map]
+
+# convert seeds through all maps all the way to location
+for conversion_map in conversion_maps:
+    seeds = convert_values(seeds, conversion_map)
+
+# print lowest location value
+print(min(seeds))

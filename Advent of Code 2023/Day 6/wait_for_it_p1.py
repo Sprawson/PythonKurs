@@ -29,7 +29,7 @@ To see how much margin of error you have, determine the number of ways you can b
 
 Determine the number of ways you could beat the record in each race. What do you get if you multiply these numbers together?"""
 
-f = open("input.txt", 'r')
+f = open("input1.txt", 'r')
 input_file = f.read()
 
 race_times = input_file.split("\n")[0].split(":")[1].split(" ")

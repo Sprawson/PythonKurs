@@ -34,24 +34,28 @@ Find the rank of every hand in your set. What are the total winnings?"""
 
 def kind_of_cards(counters):
     if len(counters) == 1:
-        return 'five_of_kind'
+        # 'five_of_kind'
+        return '7'
     elif len(counters) == 5:
-        return 'high_card'
+        #'high_card'
+        return '1'
 
     for item in counters.items():
-        if item[1] == 5:
-            return 'five_of_kind'
-        elif item[1] == 4:
-            return 'four_of_kind'
+        if item[1] == 4:
+            # 'four_of_kind'
+            return '6'
         elif item[1] == 3 and len(counters) == 2:
-            return 'full'
+            # 'full'
+            return '5'
         elif item[1] == 3 and len(counters) == 3:
-            return 'three_of_kind'
+            # 'three_of_kind'
+            return '4'
         elif item[1] == 2 and len(counters) == 3:
-            return 'two_pair'
+            # two_pair'
+            return '3'
         elif item[1] == 2 and len(counters) == 4:
-            return 'one_pair'
-
+            # 'one_pair'
+            return '2'
 
 def cards_counter(cards):
     card_values = {}
@@ -60,17 +64,19 @@ def cards_counter(cards):
         for x in range(len(cards)):
             if card == cards[x]:
                 counter += 1
-        card_values.update({card:counter})
+        card_values.update({card: counter})
 
     return card_values
+
 
 file = open("input.txt", 'r')
 file_lines = file.readlines()
 hands_ratios = []
 for line in file_lines:
-    hands_ratios.append((line.strip().split(" ")[0], line.strip().split(" ")[1]))
+    hands_ratios.append([line.strip().split(" ")[0], line.strip().split(" ")[1]])
 
-symbol_to_value = {'A': 14, 'K': 13, 'Q': 12, 'J': 11, 'T': 10}
+
+symbol_to_hex = {'A': 'E', 'K': 'D', 'Q': 'C', 'J': 'B', 'T': 'A'}
 
 for cards in hands_ratios:
     print(kind_of_cards(cards_counter(cards[0])))

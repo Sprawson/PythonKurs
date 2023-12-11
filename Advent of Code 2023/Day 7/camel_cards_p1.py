@@ -31,7 +31,11 @@ Now, you can determine the total winnings of this set of hands by adding up the 
 
 Find the rank of every hand in your set. What are the total winnings?"""
 
-
+def sort_dict(dictionary):
+    myKeys = list(dictionary.keys())
+    myKeys.sort()
+    dictionary_sorted = {i: dictionary[i] for i in myKeys}
+    return dictionary_sorted
 def kind_of_cards(counters):
     if len(counters) == 1:
         # 'five_of_kind'
@@ -77,6 +81,23 @@ for line in file_lines:
 
 
 symbol_to_hex = {'A': 'E', 'K': 'D', 'Q': 'C', 'J': 'B', 'T': 'A'}
-
+expanded_hands = {}
 for cards in hands_ratios:
-    print(kind_of_cards(cards_counter(cards[0])))
+    # find kind of card
+    x = (kind_of_cards(cards_counter(cards[0])))
+    # replace symbols to HEX substitute
+    for symbol in symbol_to_hex.keys():
+        cards[0] = cards[0].replace(symbol, symbol_to_hex[symbol])
+    # add kind of card at the start of the hex value (most important bit)
+    expanded_hands.update({x + cards[0]: cards[1]})
+
+# sort dict based on keys
+expanded_hands_sorted = sort_dict(expanded_hands)
+total_winnings = 0
+rank = 1
+# calculate total winnings
+for hand in expanded_hands_sorted:
+    total_winnings = total_winnings + (int(expanded_hands_sorted[hand]) * rank)
+    rank += 1
+print(expanded_hands_sorted)
+print(total_winnings)

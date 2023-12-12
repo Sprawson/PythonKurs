@@ -73,8 +73,9 @@ def cards_counter(cards):
     return card_values
 
 
-file = open("input.txt", 'r')
-file_lines = file.readlines()
+with open("input.txt", 'r') as file:
+    file_lines = file.readlines()
+
 hands_ratios = []
 for line in file_lines:
     hands_ratios.append([line.strip().split(" ")[0], line.strip().split(" ")[1]])

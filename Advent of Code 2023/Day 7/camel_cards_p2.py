@@ -26,13 +26,21 @@ def sort_dict(dictionary):
     return dictionary_sorted
 def kind_of_cards(counters):
     # what if there are Joker cards:
-    if 'J' in counters.keys():
-        print(counters['J'])
-
     if len(counters) == 1:
         # 'five_of_kind'
         return '7'
-    elif len(counters) == 5:
+
+    if 'J' in counters.keys():
+        # check best kind of card after replacing J with any other letter
+        number_of_jokers = counters['J']
+        # remove jokers and see what card has most occurrences
+        counters.pop('J')
+        best_card = max(counters, key=counters.get)
+        # Add number of jokers to the number of most occurred card and check kind of cards again for best match
+        counters[best_card] = counters[best_card] + number_of_jokers
+        return kind_of_cards(counters)
+
+    if len(counters) == 5:
         #'high_card'
         return '1'
 
@@ -66,14 +74,14 @@ def cards_counter(cards):
     return card_values
 
 
-file = open("input.txt", 'r')
-file_lines = file.readlines()
+with open("input.txt", 'r') as file:
+    file_lines = file.readlines()
 hands_ratios = []
 for line in file_lines:
     hands_ratios.append([line.strip().split(" ")[0], line.strip().split(" ")[1]])
 
 
-symbol_to_hex = {'A': 'E', 'K': 'D', 'Q': 'C', 'J': 'B', 'T': 'A', 'J': '1'}
+symbol_to_hex = {'A': 'D', 'K': 'C', 'Q': 'B', 'T': 'A', 'J': '1'}
 expanded_hands = {}
 for cards in hands_ratios:
     # find kind of card

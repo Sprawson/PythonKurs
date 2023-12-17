@@ -1,26 +1,30 @@
-"""This format defines each node of the network individually. For example:
+"""After examining the maps a bit longer, your attention is drawn to a curious fact: the number of nodes with names ending in A is equal to the number ending in Z! If you were a ghost, you'd probably just start at every node that ends with A and follow all of the paths at the same time until they all simultaneously end up at nodes that end with Z.
 
-RL
+For example:
 
-AAA = (BBB, CCC)
-BBB = (DDD, EEE)
-CCC = (ZZZ, GGG)
-DDD = (DDD, DDD)
-EEE = (EEE, EEE)
-GGG = (GGG, GGG)
-ZZZ = (ZZZ, ZZZ)
-Starting with AAA, you need to look up the next element based on the next left/right instruction in your input. In this example, start with AAA and go right (R) by choosing the right element of AAA, CCC. Then, L means to choose the left element of CCC, ZZZ. By following the left/right instructions, you reach ZZZ in 2 steps.
+LR
 
-Of course, you might not find ZZZ right away. If you run out of left/right instructions, repeat the whole sequence of instructions as necessary: RL really means RLRLRLRLRLRLRLRL... and so on. For example, here is a situation that takes 6 steps to reach ZZZ:
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)
+Here, there are two starting nodes, 11A and 22A (because they both end with A). As you follow each left/right instruction, use that instruction to simultaneously navigate away from both nodes you're currently on. Repeat this process until all of the nodes you're currently on end with Z. (If only some of the nodes you're on end with Z, they act like any other node and you continue as normal.) In this example, you would proceed as follows:
 
-LLR
+Step 0: You are at 11A and 22A.
+Step 1: You choose all of the left paths, leading you to 11B and 22B.
+Step 2: You choose all of the right paths, leading you to 11Z and 22C.
+Step 3: You choose all of the left paths, leading you to 11B and 22Z.
+Step 4: You choose all of the right paths, leading you to 11Z and 22B.
+Step 5: You choose all of the left paths, leading you to 11B and 22C.
+Step 6: You choose all of the right paths, leading you to 11Z and 22Z.
+So, in this example, you end up entirely on nodes that end in Z after 6 steps.
 
-AAA = (BBB, BBB)
-BBB = (AAA, ZZZ)
-ZZZ = (ZZZ, ZZZ)
-Starting at AAA, follow the left/right instructions. How many steps are required to reach ZZZ?
-
-"""
+Simultaneously start on every node that ends with A. How many steps does it take before you're only on nodes that end with Z?"""
+import math
 
 with open("input2.txt", 'r') as file:
     instructions = file.readline().strip()
@@ -35,24 +39,27 @@ for node in nodes:
 instructions = instructions.replace('R', '1')
 instructions = instructions.replace('L', '0')
 
-steps = 0
 next_moves = []
 for key in nodes_dict.keys():
     if key.endswith('A'):
         next_moves.append(key)
 
 last_letter_in_next_moves = ''
-while last_letter_in_next_moves != {'Z'}:
-    for direction in instructions:
-        for x in range(len(next_moves)):
+steps_required_for_line = []
+for x in range(len(next_moves)):
+    steps = 0
+    while not next_moves[x].endswith('Z'):
+        for direction in instructions:
             next_moves[x] = nodes_dict[next_moves[x]][int(direction)]
-        steps += 1
-        # make a set from last letter of all next moves
-        last_letter_in_next_moves = set(n[-1:] for n in next_moves)
-        print(next_moves)
-        print(last_letter_in_next_moves)
-        if last_letter_in_next_moves == {'Z'}:
-            break
+            steps += 1
+            if next_moves[x].endswith('Z'):
+                break
+    steps_required_for_line.append(steps)
 
-print(steps)
-print(next_moves)
+# now we need to get least common multiple
+lcm = 1
+for n in steps_required_for_line:
+    lcm = math.lcm(lcm, n)
+
+print(steps_required_for_line)
+print(lcm)
